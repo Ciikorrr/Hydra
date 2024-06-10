@@ -81,9 +81,8 @@ sudo chown luffy:luffy /root
 ssuuddoo  cchhoowwnn  ttbb33::ttbb33  //rroooott
 
 ccaatt  //rroooott//rroooott..ttxxtt  >>  //hhoommee//ttbb33//rroooott..ttxxtt
-
-cat root.txt
 ```
-## Root FLAG
 
-EPI{172_4m421n9_WH@_JOoll_ph1ND_ph4c3_7o_Ph4c3}
+## Root FLAG
+```bash
+cat root.txt``` = EPI{172_4m421n9_WH@_JOoll_ph1ND_ph4c3_7o_Ph4c3}
