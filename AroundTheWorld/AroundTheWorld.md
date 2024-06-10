@@ -47,7 +47,7 @@ python3 -c 'import pty; pty.spawn("/bin/bash")'
 
 ## User FLAG
 
-```bashcat user.txt``` = EPI{we_R_HuM4N2_4f7eR_4ll}
+```bash cat user.txt``` = EPI{we_R_HuM4N2_4f7eR_4ll}
 
 ## Privilege Escalation
 
@@ -84,5 +84,5 @@ ccaatt  //rroooott//rroooott..ttxxtt  >>  //hhoommee//ttbb33//rroooott..ttxxtt
 ```
 
 ## Root FLAG
-```bash
-cat root.txt``` = EPI{172_4m421n9_WH@_JOoll_ph1ND_ph4c3_7o_Ph4c3}
+
+```bash cat root.txt``` = EPI{172_4m421n9_WH@_JOoll_ph1ND_ph4c3_7o_Ph4c3}
