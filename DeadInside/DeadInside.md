@@ -35,10 +35,11 @@ access.conf
 cat access.conf 
 ```
 ### I've changed the contents of the webapp.ini file because on the website it says something like "keep the door closed" and in the file a door field is here with writing closed.
-
+```python
 webapp.ini
 
 door = opened
+```
 
 ### Exploit the sql database to got a shell as rick
 
