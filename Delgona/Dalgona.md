@@ -160,6 +160,6 @@ cd /root
 
 ## Root FLAG
 
-```cat `ls```` : EPI{F0rTy_F1V3_P01nt_S1X_b1ll10n}
+```cat `ls` ``` : EPI{F0rTy_F1V3_P01nt_S1X_b1ll10n}
 
 
