@@ -1,7 +1,7 @@
 # DeadInside
 
 ## Enumeration
-
+```bash
 └─$ nmap -A -p- -sC -T4 10.10.250.34 -oX nmap.out
 Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-05-29 11:10 BST
 Nmap scan report for 10.10.250.34
@@ -18,11 +18,12 @@ PORT    STATE SERVICE VERSION
 |_http-server-header: Apache/2.4.29 (Ubuntu)
 873/tcp open  rsync   (protocol version 31)
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
-
+```
 ## Exploitation
 
 ### I download all the files that I found
 
+```bash
 └─$ rsync -av --list-only rsync://10.10.250.34:873/
 Conf All Confs
 
@@ -32,7 +33,7 @@ access.conf
 
 └─$ rsync -av --list-only rsync://10.10.250.34:873/Conf/access.conf access.conf
 cat access.conf 
-
+```
 ### I've changed the contents of the webapp.ini file because on the website it says something like "keep the door closed" and in the file a door field is here with writing closed.
 
 webapp.ini
