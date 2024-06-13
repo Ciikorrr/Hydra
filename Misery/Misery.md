@@ -22,7 +22,7 @@ PORT      STATE SERVICE  VERSION
 Service Info: Host: 127.0.1.1; OS: Linux; CPE: cpe:/o:linux:linux_kernel
 ```
 
-### At this point I was disapointed because I had found nothing so I check the subdomain (I nver do this before)
+### At this point I was disappointed because I had found nothing so I check the subdomain (I nver do this before)
 
 ```bash
 └─$ wfuzz -c -w /usr/share/seclists/Discovery/DNS/bitquark-subdomains-top100000.txt -u 'http://ohthemisery.thm' -H "Host:FUZZ.ohthemisery.thm" --hc 302 
