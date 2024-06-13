@@ -24,7 +24,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 ```
 ## Exploitation
 
-### A wordpress website is running on it so I use WP-Scan
+### A wordpress website run on it so I use WP-Scan
 ```bash
 └─$ sudo wpscan --url http://10.10.196.137/ -P /usr/share/wordlists/rockyou.txt -U user.txt -t 3
 _______________________________________________________________
