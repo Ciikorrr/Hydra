@@ -108,7 +108,7 @@ cd /root
 ```
 ## Root FLAG
 
-```cat `ls` ```: = EPI{0H_wA17_n0_7h3R3_12_jU57_73h_harD_WaY}
+```cat `ls` ``` : EPI{0H_wA17_n0_7h3R3_12_jU57_73h_harD_WaY}
 
 
 
