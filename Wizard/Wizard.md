@@ -67,6 +67,8 @@ chmod +xs bash
 sudo -u root /sbin/reboot
 ```
 
+### Log as ron and see the dumbledore.txt file in dumbledore's home
+
 ```bash
 cat dumbledore.txt : 
 e1f22cea2a1c41f047b36b505a6aede84a848209c69505ac17ffdaebd7ba63c98e69f68f755134d7b94d47d0c86c1aea72f39fa4e89457cf8b25f19cd1b2dd33 : peek
